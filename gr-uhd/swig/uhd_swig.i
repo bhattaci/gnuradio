@@ -68,6 +68,14 @@
 
 %include <uhd/utils/pimpl.hpp>
 
+%{
+#include <uhd/utils/msg.hpp>
+static void null_msg_handler(uhd::msg::type_t type, const std::string &msg){}
+%}
+%constant void null_msg_handler(uhd::msg::type_t type, const std::string &msg);
+%rename(register_msg_handler) register_handler(const handler_t &handler);
+%include <uhd/utils/msg.hpp>
+
 %ignore uhd::dict::operator[]; //ignore warnings about %extend
 %include <uhd/types/dict.hpp>
 %template(string_string_dict_t) uhd::dict<std::string, std::string>; //define after dict
