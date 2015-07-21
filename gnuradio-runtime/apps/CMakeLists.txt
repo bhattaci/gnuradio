@@ -34,6 +34,9 @@ link_directories(
 ########################################################################
 add_executable(gnuradio-config-info gnuradio-config-info.cc)
 target_link_libraries(gnuradio-config-info gnuradio-runtime ${Boost_LIBRARIES})
+set_target_properties(gnuradio-config-info PROPERTIES
+                      INSTALL_RPATH "\$ORIGIN/../\$LIB")
+
 install(
     TARGETS gnuradio-config-info
     DESTINATION ${GR_RUNTIME_DIR}

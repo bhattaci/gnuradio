@@ -140,7 +140,10 @@ function(GR_LIBRARY_FOO target)
     CMAKE_PARSE_ARGUMENTS(GR_LIBRARY "" "RUNTIME_COMPONENT;DEVEL_COMPONENT" "" ${ARGN})
 
     #set additional target properties
-    set_target_properties(${target} PROPERTIES SOVERSION ${LIBVER})
+    set_target_properties(${target} PROPERTIES
+        SOVERSION ${LIBVER}
+        INSTALL_RPATH "\$ORIGIN"
+    )
 
     #install the generated files like so...
     install(TARGETS ${target}
