@@ -194,6 +194,7 @@ macro(GR_SWIG_MAKE name)
     if(${name} STREQUAL "runtime_swig")
         SET_TARGET_PROPERTIES(${SWIG_MODULE_runtime_swig_REAL_NAME} PROPERTIES DEFINE_SYMBOL "gnuradio_runtime_EXPORTS")
     endif(${name} STREQUAL "runtime_swig")
+    SET_TARGET_PROPERTIES(${SWIG_MODULE_${name}_REAL_NAME} PROPERTIES INSTALL_RPATH "\$ORIGIN/../../../..")
 
 endmacro(GR_SWIG_MAKE)
 
