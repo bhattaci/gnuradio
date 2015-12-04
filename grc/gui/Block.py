@@ -210,6 +210,19 @@ class Block(Element):
             ]
         else:
             markups = [param.get_markup() for param in self.get_params() if param.get_hide() not in ('all', 'part')]
+        if self.get_key() == 'epy_module':
+            objects = self.get_parent().evaluate('dir({module})'.format(module=self.get_id()))
+            objects = [obj for obj in objects if not obj.startswith('_')]
+            if len(objects) > 5:
+                objects = objects[:5] + ['...']
+            markups.append('\n'.join(
+                '<span font_desc="{font}">'
+                '<span foreground="{color}"><b>Object{s}:</b></span> <span foreground="black">{name}</span>'
+                '</span>'.format(
+                    name=name, s='s' if len(objects) > 1 else '',
+                    font=PARAM_FONT, color='black' if i == 0 else self._bg_color,
+                ) for i, name in enumerate(objects)
+            ))
         if markups:
             layout = gtk.DrawingArea().create_pango_layout('')
             layout.set_spacing(LABEL_SEPARATION*pango.SCALE)
