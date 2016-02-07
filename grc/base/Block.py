@@ -200,16 +200,11 @@ class Block(Element):
                              })
                     ))
 
-        self.get_params().append(self.get_parent().get_parent().Param(
-                block=self,
-                n=odict({'name': 'Comment',
-                         'key': 'comment',
-                         'type': '_multiline',
-                         'hide': 'part',
-                         'value': '',
-                         'tab': ADVANCED_PARAM_TAB
-                         })
-                ))
+        self.add_param(name='Comment', key='comment', type='_multiline', hide='part',
+                       value='', tab=ADVANCED_PARAM_TAB)
+
+    def add_param(self, **kwargs):
+        self.get_params().append(self.get_parent().get_parent().Param(block=self, n=odict(kwargs)))
 
     def back_ofthe_bus(self, portlist):
         portlist.sort(key=lambda p: p._type == 'bus')

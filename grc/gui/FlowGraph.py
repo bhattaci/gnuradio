@@ -59,6 +59,7 @@ class FlowGraph(Element):
         #context menu
         self._context_menu = Bars.ContextMenu()
         self.get_context_menu = lambda: self._context_menu
+        self.current_page = 'default0'
 
         self._external_updaters = {}
 
@@ -101,7 +102,6 @@ class FlowGraph(Element):
             return
         Actions.EXTERNAL_UPDATE()
 
-
     ###########################################################################
     # Access Drawing Area
     ###########################################################################
@@ -134,6 +134,7 @@ class FlowGraph(Element):
         block = self.get_new_block(key)
         block.set_coordinate(coor)
         block.set_rotation(0)
+        block.set_page(self.current_page)
         block.get_param('id').set_value(id)
         Actions.ELEMENT_CREATE()
         return id
@@ -205,6 +206,7 @@ class FlowGraph(Element):
                 block.get_param(param_key).set_value(param_value)
             #move block to offset coordinate
             block.move((x_off, y_off))
+            block.set_page(self.current_page)
         #update before creating connections
         self.update()
         #create connections
@@ -365,6 +367,8 @@ class FlowGraph(Element):
         for element in chain(self.iter_connections(), blocks):
             if hide_disabled_blocks and not element.get_enabled():
                 continue  # skip hidden disabled blocks and connections
+            if element.get_page() != self.current_page and element is not self._options_block:
+                continue
             element.draw(gc, window)
         #draw selected blocks on top of selected connections
         for selected_element in self.get_selected_connections() + self.get_selected_blocks():
@@ -445,6 +449,8 @@ class FlowGraph(Element):
         selected = set()
         #check the elements
         for element in reversed(self.get_elements()):
+            if element.get_page() != self.current_page and element is not self._options_block:
+                continue
             selected_element = element.what_is_selected(coor, coor_m)
             if not selected_element: continue
             # hidden disabled connections, blocks and their ports can not be selected

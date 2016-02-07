@@ -52,7 +52,6 @@ COMMENT_COMPLEXITY_MARKUP_TMPL="""\
 """
 
 
-
 class Block(Element):
     """The graphical signal block."""
 
@@ -63,30 +62,20 @@ class Block(Element):
         """
         self.W = 0
         self.H = 0
-        #add the position param
-        self.get_params().append(self.get_parent().get_parent().Param(
-            block=self,
-            n=odict({
-                'name': 'GUI Coordinate',
-                'key': '_coordinate',
-                'type': 'raw',
-                'value': '(0, 0)',
-                'hide': 'all',
-            })
-        ))
-        self.get_params().append(self.get_parent().get_parent().Param(
-            block=self,
-            n=odict({
-                'name': 'GUI Rotation',
-                'key': '_rotation',
-                'type': 'raw',
-                'value': '0',
-                'hide': 'all',
-            })
-        ))
+        self.add_param(name='GUI Coordinate', key='_coordinate', type='raw', hide='all', value='(0, 0)')
+        self.add_param(name='GUI Rotation', key='_rotation', type='raw', hide='all', value='0')
+        self.add_param(name='Page', key='_page', type='string', hide='all', value='default')
+        if self._key == 'options':
+            self.add_param(name='Active Page', key='_active_page', type='string', hide='all', value='default')
         Element.__init__(self)
         self._comment_pixmap = None
         self.has_busses = [False, False]  # source, sink
+
+    def get_page(self):
+        return self.get_param('_page').get_value()
+
+    def set_page(self, page):
+        self.get_param('_page').set_value(repr(page))
 
     def get_coordinate(self):
         """

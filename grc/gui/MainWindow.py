@@ -27,6 +27,7 @@ import Bars
 from BlockTreeWindow import BlockTreeWindow
 from Dialogs import TextDisplay, MessageDialogHelper
 from NotebookPage import NotebookPage
+from FlowGraphPage import FlowGraphPagesManager
 import Preferences
 import Messages
 import Utils
@@ -97,6 +98,9 @@ class MainWindow(gtk.Window):
         self.notebook.set_show_border(False)
         self.notebook.set_scrollable(True) #scroll arrows for page tabs
         self.notebook.connect('switch-page', self._handle_page_change)
+        # create fg pages selector
+        self.flow_graph_pages = FlowGraphPagesManager()
+        self.notebook.set_action_widget(self.flow_graph_pages, gtk.PACK_END)
         #setup containers
         self.flow_graph_vpaned = gtk.VPaned()
         #flow_graph_box.pack_start(self.scrolled_window)
@@ -148,6 +152,7 @@ class MainWindow(gtk.Window):
             page_num: new page number
         """
         self.current_page = self.notebook.get_nth_page(page_num)
+        self.flow_graph_pages.set_flow_graph(self.current_page.get_flow_graph())
         Messages.send_page_switch(self.current_page.get_file_path())
         Actions.PAGE_CHANGE()
 

@@ -50,6 +50,9 @@ class Port(Element):
         self._hovering = True
         self._force_label_unhidden = False
 
+    def get_page(self):
+        return self.get_parent().get_page()
+
     def create_shapes(self):
         """Create new areas and labels for the port."""
         Element.create_shapes(self)

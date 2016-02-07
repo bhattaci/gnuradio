@@ -60,6 +60,9 @@ class Connection(Element):
         """
         return 0
 
+    def get_page(self):
+        return self.get_source().get_page()
+
     def create_shapes(self):
         """Precalculate relative coordinates."""
         Element.create_shapes(self)
