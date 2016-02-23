@@ -19,7 +19,7 @@
 
 ########################################################################
 file(GLOB xml_files "*.xml")
-install(FILES ${xml_files} DESTINATION ${GRC_BLOCKS_DIR} COMPONENT "wxgui_python")
+install(FILES ${xml_files} DESTINATION ${GRC_BLOCKS_DIR}/gr-wxgui COMPONENT "wxgui_python")
 
 ########################################################################
 #The wxgui module contains a top_block + wxgui frame.

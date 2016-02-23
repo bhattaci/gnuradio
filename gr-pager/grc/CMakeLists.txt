@@ -17,10 +17,5 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-install(FILES
-    pager_slicer_fb.xml
-    pager_flex_sync.xml
-    pager_flex_deinterleave.xml
-    DESTINATION ${GRC_BLOCKS_DIR}
-    COMPONENT "pager_python"
-)
+file(GLOB xml_files "*.xml")
+install(FILES ${xml_files} DESTINATION ${GRC_BLOCKS_DIR}/gr-pager COMPONENT "pager_python")

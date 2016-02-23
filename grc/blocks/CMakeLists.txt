@@ -38,6 +38,6 @@ add_custom_target(grc_generated_xml ALL DEPENDS ${generated_xml_files})
 
 install(
     FILES ${xml_files} ${generated_xml_files}
-    DESTINATION ${GRC_BLOCKS_DIR}
+    DESTINATION ${GRC_BLOCKS_DIR}/grc
     COMPONENT "grc"
 )

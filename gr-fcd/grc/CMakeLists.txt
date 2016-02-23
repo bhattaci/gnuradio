@@ -17,8 +17,4 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-install(FILES
-    fcd_source_c.xml
-    DESTINATION ${GRC_BLOCKS_DIR}
-    COMPONENT "fcd_python"
-)
+install(FILES fcd_source_c.xml DESTINATION ${GRC_BLOCKS_DIR}/gr-fcd COMPONENT "fcd_python")

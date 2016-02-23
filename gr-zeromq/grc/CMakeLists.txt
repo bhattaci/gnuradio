@@ -17,21 +17,7 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-install(FILES
-    zeromq_pub_sink.xml
-    zeromq_pub_msg_sink.xml
-    zeromq_sub_source.xml
-    zeromq_sub_msg_source.xml
-    zeromq_push_sink.xml
-    zeromq_push_msg_sink.xml
-    zeromq_pull_source.xml
-    zeromq_pull_msg_source.xml
-    zeromq_rep_sink.xml
-    zeromq_rep_msg_sink.xml
-    zeromq_req_source.xml
-    zeromq_req_msg_source.xml
-
-    DESTINATION share/gnuradio/grc/blocks
-)
+file(GLOB xml_files "*.xml")
+install(FILES ${xml_files} DESTINATION ${GRC_BLOCKS_DIR}/gr-zeromq COMPONENT "zeromq_python")
 
 

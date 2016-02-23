@@ -17,20 +17,5 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-install(FILES
-    trellis_encoder_xx.xml
-    trellis_siso_combined_f.xml
-    trellis_viterbi_x.xml
-    trellis_metrics_x.xml
-    trellis_siso_f.xml
-    trellis_permutation.xml
-    trellis_viterbi_combined_xx.xml
-    trellis_sccc_encoder_xx.xml
-    trellis_sccc_decoder_x.xml
-    trellis_sccc_decoder_combined_xx.xml
-    trellis_pccc_encoder_xx.xml
-    trellis_pccc_decoder_x.xml
-    trellis_pccc_decoder_combined_xx.xml
-    DESTINATION ${GRC_BLOCKS_DIR}
-    COMPONENT "trellis_python"
-)
+file(GLOB xml_files "*.xml")
+install(FILES ${xml_files} DESTINATION ${GRC_BLOCKS_DIR}/gr-trellis COMPONENT "trellis_python")

@@ -17,10 +17,5 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-install(FILES
-    noaa_hrpt_decoder.xml
-    noaa_hrpt_deframer.xml
-    noaa_hrpt_pll_cf.xml
-    DESTINATION ${GRC_BLOCKS_DIR}
-    COMPONENT "noaa_python"
-)
+file(GLOB xml_files "*.xml")
+install(FILES ${xml_files} DESTINATION ${GRC_BLOCKS_DIR}/gr-noaa COMPONENT "noaa_python")

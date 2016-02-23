@@ -17,12 +17,5 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 
-install(FILES
-    fft_block_tree.xml
-    fft_fft_vxx.xml
-    fft_goertzel_fc.xml
-    fft_logpwrfft_x.xml
-    fft_ctrlport_probe_psd.xml
-    DESTINATION ${GRC_BLOCKS_DIR}
-    COMPONENT "fft_python"
-)
+file(GLOB xml_files "*.xml")
+install(FILES ${xml_files} DESTINATION ${GRC_BLOCKS_DIR}/gr-fft COMPONENT "fft_python")
