@@ -7,6 +7,7 @@
 <block>
 	<name>Pad Source</name>
 	<key>pad_source</key>
+	<flags>need_hier_block</flags>
 	<make></make>
 	<param>
 		<name>Label</name>

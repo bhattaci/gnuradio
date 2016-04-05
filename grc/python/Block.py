@@ -20,7 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 import itertools
 import collections
 
-from .. base.Constants import BLOCK_FLAG_NEED_QT_GUI, BLOCK_FLAG_NEED_WX_GUI
+from .. base.Constants import (
+    BLOCK_FLAG_NEED_QT_GUI,
+    BLOCK_FLAG_NEED_WX_GUI,
+    BLOCK_FLAG_NEED_HIER_BLOCK,
+)
 from .. base.odict import odict
 
 from .. base.Block import Block as _Block
@@ -108,7 +112,7 @@ class Block(_Block, _GUIBlock):
         def check_generate_mode(label, flag, valid_options):
             block_requires_mode = (
                 flag in self.get_flags() or
-                self.get_name().upper().startswith(label)
+                (label and self.get_name().upper().startswith(label))
             )
             if block_requires_mode and current_generate_option not in valid_options:
                 self.add_error_message("Can't generate this block in mode " +
@@ -116,6 +120,7 @@ class Block(_Block, _GUIBlock):
 
         check_generate_mode('WX GUI', BLOCK_FLAG_NEED_WX_GUI, ('wx_gui',))
         check_generate_mode('QT GUI', BLOCK_FLAG_NEED_QT_GUI, ('qt_gui', 'hb_qt_gui'))
+        check_generate_mode('', BLOCK_FLAG_NEED_HIER_BLOCK, ('hb', 'hb_qt_gui'))
         if self._epy_reload_error:
             self.get_param('_source_code').add_error_message(str(self._epy_reload_error))
 
