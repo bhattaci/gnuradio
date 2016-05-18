@@ -292,6 +292,45 @@ BLOCK_ALIGNMENTS = [
     BLOCK_HALIGN_CENTER,
     BLOCK_HALIGN_RIGHT,
 ]
+BLOCK_HORZ_SPACING = Action(
+    label='Equalize Horizontal Spacing',
+    tooltip='Distribute the selected blocks to equalize the horizontal spacing',
+    keypresses=(gtk.keysyms.h, gtk.gdk.SHIFT_MASK),
+)
+BLOCK_HORZ_SPACING_INC = Action(
+    label='Increase Horizontal Spacing',
+    tooltip='Increase the horizontal spacing between the selected blocks',
+    keypresses=(gtk.keysyms.Right, gtk.gdk.SHIFT_MASK),
+)
+BLOCK_HORZ_SPACING_DEC = Action(
+    label='Decrease Horizontal Spacing',
+    tooltip='Decrease the horizontal spacing between the selected blocks',
+    keypresses=(gtk.keysyms.Left, gtk.gdk.SHIFT_MASK),
+)
+BLOCK_VERT_SPACING = Action(
+    label='Equalize Vertical Spacing',
+    tooltip='Distribute the selected blocks to equalize the vertical spacing',
+    keypresses=(gtk.keysyms.v, gtk.gdk.SHIFT_MASK),
+)
+BLOCK_VERT_SPACING_INC = Action(
+    label='Increase Vertical Spacing',
+    tooltip='Increase the vertical spacing between the selected blocks',
+    keypresses=(gtk.keysyms.Up, gtk.gdk.SHIFT_MASK),
+)
+BLOCK_VERT_SPACING_DEC = Action(
+    label='Decrease Vertical Spacing',
+    tooltip='Decrease the vertical spacing between the selected blocks',
+    keypresses=(gtk.keysyms.Down, gtk.gdk.SHIFT_MASK),
+)
+BLOCK_SPACINGS = [
+    BLOCK_VERT_SPACING_INC,
+    BLOCK_VERT_SPACING,
+    BLOCK_VERT_SPACING_DEC,
+    None,
+    BLOCK_HORZ_SPACING_INC,
+    BLOCK_HORZ_SPACING,
+    BLOCK_HORZ_SPACING_DEC,
+]
 BLOCK_PARAM_MODIFY = Action(
     label='_Properties',
     tooltip='Modify params for the selected block',

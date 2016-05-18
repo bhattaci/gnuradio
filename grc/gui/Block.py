@@ -130,6 +130,15 @@ class Block(Element, _Block):
             )
         self.get_param('_coordinate').set_value(str(coor))
 
+    def get_size(self):
+        """
+        Get the block size (width, height) as drawn on the screen (rotated)
+
+        Returns:
+            The transformed (W,H) accounting for rotation
+        """
+        return (self.W, self.H) if self.is_horizontal else (self.H, self.W)
+
     def bound_move_delta(self, delta_coor):
         """
         Limit potential moves from exceeding the bounds of the canvas

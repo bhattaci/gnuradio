@@ -312,6 +312,62 @@ class FlowGraph(Element, _Flowgraph):
             selected_block.move(delta_coordinate)
             self.element_moved = True
 
+    def space_selected(self, action=None):
+        """
+        Space the selected blocks.
+
+        Args:
+            action: the label of the action
+        Returns:
+            True if changed, otherwise False
+        """
+        blocks = self.get_selected_blocks()
+        if action is None or not blocks:
+            return False
+
+        # vertical or horizontal spacing?
+        if action in [Actions.BLOCK_HORZ_SPACING,
+                      Actions.BLOCK_HORZ_SPACING_DEC,
+                      Actions.BLOCK_HORZ_SPACING_INC]:
+            vertically = 0
+        else:
+            vertically = 1
+
+        # sort our list of blocks by position
+        blocks.sort(key=lambda b: b.get_coordinate()[vertically])
+
+        # compute inter-block free space
+        space = 0
+        cur = None
+        for blk in blocks:
+            if cur:
+                space += blk.get_coordinate()[vertically] - cur
+            cur = blk.get_coordinate()[vertically] + blk.get_size()[vertically]
+        spacing = Utils.align_to_grid(space / (len(blocks) - 1))
+
+        if action in [Actions.BLOCK_VERT_SPACING_INC, Actions.BLOCK_HORZ_SPACING_INC]:
+            spacing += Constants.CANVAS_GRID_SIZE
+            blocks_to_move = blocks
+
+        elif action in [Actions.BLOCK_VERT_SPACING_DEC, Actions.BLOCK_HORZ_SPACING_DEC]:
+            spacing -= Constants.CANVAS_GRID_SIZE
+            blocks_to_move = blocks
+
+        else:
+            blocks_to_move = blocks[1:-1]
+
+        # skip almost well spaced blocks to avoid jitter
+        if spacing <= 0 or spacing < Constants.CANVAS_GRID_SIZE:
+            return False
+
+        cur = blocks_to_move[0].get_coordinate()[vertically]
+        for blk in blocks_to_move:
+            x, y = blk.get_coordinate()
+            blk.set_coordinate((x, cur) if vertically else (cur, y))
+            cur += spacing + blk.get_size()[vertically]
+
+        return True
+
     def align_selected(self, calling_action=None):
         """
         Align the selected blocks.

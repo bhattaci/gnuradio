@@ -87,6 +87,7 @@ MENU_BAR_LIST = (
         Actions.BLOCK_ROTATE_CCW,
         Actions.BLOCK_ROTATE_CW,
         (gtk.Action('Align', '_Align', None, None), Actions.BLOCK_ALIGNMENTS),
+        (gtk.Action('Spacing', '_Spacing', None, None), Actions.BLOCK_SPACINGS),
         None,
         Actions.BLOCK_ENABLE,
         Actions.BLOCK_DISABLE,

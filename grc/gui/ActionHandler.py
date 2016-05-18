@@ -325,6 +325,10 @@ class ActionHandler:
             self.get_page().get_state_cache().save_new_state(self.get_flow_graph().export_data())
             self.get_page().set_saved(False)
 
+        elif action in Actions.BLOCK_SPACINGS:
+            if self.get_flow_graph().space_selected(action):
+                self.get_page().get_state_cache().save_new_state(self.get_flow_graph().export_data())
+                self.get_page().set_saved(False)
         elif action in Actions.BLOCK_ALIGNMENTS:
             if self.get_flow_graph().align_selected(action):
                 self.get_page().get_state_cache().save_new_state(self.get_flow_graph().export_data())
@@ -617,6 +621,9 @@ class ActionHandler:
         for act in Actions.BLOCK_ALIGNMENTS:
             if act:
                 act.set_sensitive(len(selected_blocks) > 1)
+        for act in Actions.BLOCK_SPACINGS:
+            if act:
+                act.set_sensitive(len(selected_blocks) > 2)
         #update cut/copy/paste
         Actions.BLOCK_CUT.set_sensitive(bool(selected_blocks))
         Actions.BLOCK_COPY.set_sensitive(bool(selected_blocks))
