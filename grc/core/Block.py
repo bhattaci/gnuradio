@@ -457,6 +457,10 @@ class Block(Element):
         except Exception as err:
             return "Template error: {}\n    {}".format(tmpl, err)
 
+    def evaluate(self, expr):
+        n = {key: param.get_evaluated() for key, param in six.iteritems(self.params)}
+        return self.parent_flowgraph.evaluate(expr, n)
+
     ##############################################
     # Import/Export Methods
     ##############################################

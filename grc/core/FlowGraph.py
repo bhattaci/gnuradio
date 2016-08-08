@@ -241,7 +241,7 @@ class FlowGraph(Element):
         self._eval_cache.clear()
         self.namespace.update(namespace)
 
-    def evaluate(self, expr):
+    def evaluate(self, expr, namespace=None):
         """
         Evaluate the expression.
 
@@ -255,7 +255,10 @@ class FlowGraph(Element):
         # Evaluate
         if not expr:
             raise Exception('Cannot evaluate empty statement.')
-        return self._eval_cache.setdefault(expr, eval(expr, self.namespace))
+        if namespace is not None:
+            return eval(expr, namespace)
+        else:
+            return self._eval_cache.setdefault(expr, eval(expr, self.namespace))
 
     ##############################################
     # Add/remove stuff

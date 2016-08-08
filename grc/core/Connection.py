@@ -133,8 +133,8 @@ class Connection(Element):
             self.add_error_message(
                 'Domain "{}" can have only one upstream block'.format(sink_domain))
 
-        source_size = Constants.TYPE_TO_SIZEOF[self.source_port.get_type()] * self.source_port.get_vlen()
-        sink_size = Constants.TYPE_TO_SIZEOF[self.sink_port.get_type()] * self.sink_port.get_vlen()
+        source_size = Constants.TYPE_TO_SIZEOF[self.source_port.get_type()] * self.source_port.vlen
+        sink_size = Constants.TYPE_TO_SIZEOF[self.sink_port.get_type()] * self.sink_port.vlen
         if source_size != sink_size:
             self.add_error_message('Source IO size "{}" does not match sink IO size "{}".'.format(source_size, sink_size))
 

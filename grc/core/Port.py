@@ -101,6 +101,9 @@ def _get_sink_from_virtual_sink_port(vsp, traversed=[]):
         raise Exception('Could not resolve source for virtual sink port {}'.format(vsp))
 
 
+class Enum(set):
+    pass
+
 class Port(Element):
 
     is_port = True
@@ -110,6 +113,7 @@ class Port(Element):
                  vlen='', multiplicity='', optional=False, hide='', **kwargs):
         """Make a new port from nested data."""
         Element.__init__(self, parent)
+        self.reset_on_rewrite = set()
 
         self._dir = direction
         self.key = key
@@ -119,6 +123,7 @@ class Port(Element):
         self.domain = domain or Constants.DEFAULT_DOMAIN
         self._type = dtype
         self._vlen = vlen
+        self.setup_attribute('vlen', int, vlen, 1)
 
         if domain == Constants.GR_MESSAGE_DOMAIN:
             self.key = self.name
@@ -131,13 +136,27 @@ class Port(Element):
 
         self.inherit_type = not self._type
         self._hide_evaluated = False  # Updated on rewrite()
+
         self.clones = []  # References to cloned ports (for nports > 1)
+
+    def setup_attribute(self, name, type_, value, default):
+        if not value:
+            setattr(self, name, default)
+        elif isinstance(type_, Enum) and value in type_:
+            setattr(self, name, value)
+        elif isinstance(value, type_):
+            setattr(self, name, value)
+        else:
+            self.reset_on_rewrite.add(name)
 
     def __str__(self):
         if self.is_source:
             return 'Source - {}({})'.format(self.name, self.key)
         if self.is_sink:
             return 'Sink - {}({})'.format(self.name, self.key)
+
+    def __repr__(self):
+        return '{}.{}[{}]'.format(self.parent, 'sinks' if self.is_sink else 'sources', self.key)
 
     def validate(self):
         Element.validate(self)
@@ -153,16 +172,17 @@ class Port(Element):
         """
         Handle the port cloning for virtual blocks.
         """
+        for attr in self.reset_on_rewrite:
+            self.__dict__.pop(attr, None)
+
         if self.inherit_type:
             try:
                 # Clone type and vlen
                 source = self.resolve_empty_type()
                 self._type = str(source.get_type())
-                self._vlen = str(source.get_vlen())
+                setattr(self, 'vlen', source.vlen)
             except:
-                # Reset type and vlen
-                self._type = ''
-                self._vlen = ''
+                pass
 
         Element.rewrite(self)
         hide = self.parent.resolve_dependencies(self._hide).strip().lower()
@@ -218,6 +238,24 @@ class Port(Element):
             return max(1, int(self.parent_flowgraph.evaluate(vlen)))
         except:
             return 1
+
+    @lazy_property
+    def vlen(self):
+        """
+        Get the vector length.
+        If the evaluation of vlen cannot be cast to an integer, return 1.
+
+        Returns:
+            the vector length or 1
+        """
+        # vlen = self.parent.resolve_dependencies(self._vlen)
+        try:
+            vlen = max(1, int(self.parent_block.evaluate(self._vlen)))
+        except:
+            raise
+            vlen = 1
+        print(self, self._vlen, vlen)
+        return vlen
 
     def get_nports(self):
         """

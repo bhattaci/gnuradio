@@ -79,9 +79,8 @@ class Port(_Port, Element):
         else:
             self._font_color[-1] = 1.0
             color = Colors.PORT_TYPE_TO_COLOR.get(self.get_type()) or Colors.PORT_TYPE_TO_COLOR.get('')
-            vlen = self.get_vlen()
-            if vlen > 1:
-                dark = (0, 0, 30 / 255.0, 50 / 255.0, 70 / 255.0)[min(4, vlen)]
+            if self.vlen > 1:
+                dark = (0, 0, 30 / 255.0, 50 / 255.0, 70 / 255.0)[min(4,  self.vlen)]
                 color = tuple(max(c - dark, 0) for c in color)
         self._bg_color = color
         self._border_color = tuple(max(c - 0.3, 0) for c in color)

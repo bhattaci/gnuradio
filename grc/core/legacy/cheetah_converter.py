@@ -68,7 +68,7 @@ class Converter(object):
         return self.convert(expr=expr, spec=Mako)
 
     def convert(self, expr, spec=Python):
-        if '$' not in expr:
+        if not expr or '$' not in expr:
             return expr
         try:
             return self.convert_simple(expr, spec)
