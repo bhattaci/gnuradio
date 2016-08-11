@@ -104,6 +104,7 @@ def _get_sink_from_virtual_sink_port(vsp, traversed=[]):
 class Enum(set):
     pass
 
+
 class Port(Element):
 
     is_port = True

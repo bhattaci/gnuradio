@@ -333,7 +333,18 @@ class Platform(Element):
         flow_graph_file = flow_graph_file or self.config.default_flow_graph
         open(flow_graph_file, 'r').close()  # Test open
         ParseXML.validate_dtd(flow_graph_file, Constants.FLOW_GRAPH_DTD)
-        return ParseXML.from_file(flow_graph_file)
+        n = ParseXML.from_file(flow_graph_file)
+        data = dict(format=n.get('_instructions', {}).get('format'),
+                    timestamp=n.get('timestamp'))
+        data['blocks'] = {
+            block['key']: {param['key']: param['value'] for param in block.get('param', [])}
+            for block in n.get('block', [])
+        }
+        data['connections'] = [
+            (c['source_block_id'], c['source_key'], c['sink_block_id'], c['sink_key'])
+            for c in n.get('connection', [])
+        ]
+        return n
 
     def get_blocks(self):
         return list(self.blocks.values())
