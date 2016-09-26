@@ -90,8 +90,8 @@ class Connection(CoreConnection, Drawable):
         source_domain = self.source_port.domain
         sink_domain = self.sink_port.domain
 
-        def get_domain_color(domain_name):
-            domain = self.parent_platform.domains.get(domain_name, {})
+        def get_domain_color(domain_id):
+            domain = self.parent_platform.domains.get(domain_id, {})
             color_spec = domain.get('color')
             return Colors.get_color(color_spec) if color_spec else Colors.DEFAULT_DOMAIN_COLOR
 
