@@ -462,17 +462,18 @@ class Block(Element):
             iter_ports = iter(ports)
             ports_new = []
             port_current = next(iter_ports, None)
-            for key, port_type in port_specs:
+            for key, port_type, vlen in port_specs:
                 reuse_port = (
                     port_current is not None and
                     port_current.get_type() == port_type and
+                    port_current.get_vlen() == vlen and
                     (key.isdigit() or port_current.get_key() == key)
                 )
                 if reuse_port:
                     ports_to_remove.remove(port_current)
                     port, port_current = port_current, next(iter_ports, None)
                 else:
-                    n = odict(dict(name=label + str(key), type=port_type, key=key))
+                    n = odict(dict(name=label + str(key), type=port_type, key=key, vlen=str(vlen)))
                     if port_type == 'message':
                         n['name'] = key
                         n['optional'] = '1'

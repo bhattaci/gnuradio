@@ -17,14 +17,16 @@ BlockIO = collections.namedtuple('BlockIO', 'name cls params sinks sources doc c
 def _ports(sigs, msgs):
     ports = list()
     for i, dtype in enumerate(sigs):
+        dtype, shape = dtype.subdtype or (dtype, (1,))
         port_type = TYPE_MAP.get(dtype.name, None)
+        port_vlen = shape[0]
         if not port_type:
-            raise ValueError("Can't map {0:!r} to GRC port type".format(dtype))
-        ports.append((str(i), port_type))
+            raise ValueError("Can't map {0!r} to GRC port type".format(dtype))
+        ports.append((str(i), port_type, port_vlen))
     for msg_key in msgs:
         if msg_key == 'system':
             continue
-        ports.append((msg_key, 'message'))
+        ports.append((msg_key, 'message', 1))
     return ports
 
 
